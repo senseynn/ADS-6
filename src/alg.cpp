@@ -4,6 +4,19 @@
 
 struct SYM {
     char ch;
+    int prior;
+};
+
+template<typename T>
+class TPQueue {
+ private:
+    struct Node {
+        T info;
+        Node* link;
+        explicit Node(const T& value) : info(value), link(nullptr) {}
+    };
+
+    Node* first;
 
  public:
     TPQueue() : first(nullptr) {}
