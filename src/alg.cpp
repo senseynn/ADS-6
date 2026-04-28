@@ -31,6 +31,21 @@ class TPQueue {
         if (!first || item.prior > first->info.prior) {
             node->link = first;
             first = node;
+        } else {
+            Node* ptr = first;
+            while (ptr->link && ptr->link->info.prior >= item.prior)
+                ptr = ptr->link;
+            node->link = ptr->link;
+            ptr->link = node;
+        }
+    }
+
+    T pop() {
+        Node* tmp = first;
+        T res = first->info;
+        first = first->link;
+        delete tmp;
+        return res;
     }
 };
 
