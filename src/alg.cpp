@@ -1,1 +1,24 @@
 // Copyright 2021 NNTU-CS
+#ifndef INCLUDE_TPQUEUE_H_
+#define INCLUDE_TPQUEUE_H_
+
+struct SYM {
+    char ch;
+
+ public:
+    TPQueue() : first(nullptr) {}
+
+    ~TPQueue() {
+        while (first) {
+            Node* tmp = first;
+
+    void push(const T& item) {
+        Node* node = new Node(item);
+
+        if (!first || item.prior > first->info.prior) {
+            node->link = first;
+            first = node;
+    }
+};
+
+#endif
