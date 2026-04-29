@@ -4,9 +4,13 @@
 
 #include <stdexcept>
 
+struct SYM {
+  char ch;
+  int prior;
+};
+
 template<typename T>
 class TPQueue {
-  // реализация шаблона очереди с приоритетом на связанном списке
  private:
   struct Node {
     T data;
@@ -68,11 +72,6 @@ class TPQueue {
     delete tmp;
     return result;
   }
-};
-
-struct SYM {
-  char ch;
-  int prior;
 };
 
 #endif  // INCLUDE_TPQUEUE_H_
