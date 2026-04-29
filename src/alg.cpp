@@ -2,53 +2,77 @@
 #ifndef INCLUDE_TPQUEUE_H_
 #define INCLUDE_TPQUEUE_H_
 
-struct SYM {
-    char ch;
-    int prior;
-};
+#include <stdexcept>
 
 template<typename T>
 class TPQueue {
+  // реализация шаблона очереди с приоритетом на связанном списке
  private:
-    struct Node {
-        T info;
-        Node* link;
-        explicit Node(const T& value) : info(value), link(nullptr) {}
-    };
+  struct Node {
+    T data;
+    Node* next;
 
-    Node* first;
+    explicit Node(const T& value) : data(value), next(nullptr) {}
+  };
+
+  Node* head;
 
  public:
-    TPQueue() : first(nullptr) {}
-    ~TPQueue() {
-        while (first) {
-            Node* tmp = first;
-            first = first->link;
-            delete tmp;
-        }
+  TPQueue() : head(nullptr) {}
+
+  ~TPQueue() {
+    clear();
+  }
+
+  TPQueue(const TPQueue&) = delete;
+  TPQueue& operator=(const TPQueue&) = delete;
+
+  bool empty() const {
+    return head == nullptr;
+  }
+
+  void clear() {
+    while (head != nullptr) {
+      Node* tmp = head;
+      head = head->next;
+      delete tmp;
+    }
+  }
+
+  void push(const T& value) {
+    Node* node = new Node(value);
+
+    if (head == nullptr || value.prior > head->data.prior) {
+      node->next = head;
+      head = node;
+      return;
     }
 
-    void push(const T& item) {
-        Node* node = new Node(item);
-        if (!first || item.prior > first->info.prior) {
-            node->link = first;
-            first = node;
-        } else {
-            Node* ptr = first;
-            while (ptr->link && ptr->link->info.prior >= item.prior)
-                ptr = ptr->link;
-            node->link = ptr->link;
-            ptr->link = node;
-        }
+    Node* cur = head;
+    while (cur->next != nullptr && cur->next->data.prior >= value.prior) {
+      cur = cur->next;
     }
 
-    T pop() {
-        Node* tmp = first;
-        T res = first->info;
-        first = first->link;
-        delete tmp;
-        return res;
+    node->next = cur->next;
+    cur->next = node;
+  }
+
+  T pop() {
+    if (head == nullptr) {
+      throw std::out_of_range("TPQueue is empty");
     }
+
+    Node* tmp = head;
+    T result = head->data;
+    head = head->next;
+    delete tmp;
+    return result;
+  }
+};
+
+struct SYM {
+  char ch;
+  int prior;
 };
 
 #endif  // INCLUDE_TPQUEUE_H_
