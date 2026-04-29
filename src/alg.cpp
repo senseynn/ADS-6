@@ -24,6 +24,10 @@ class TPQueue {
     ~TPQueue() {
         while (first) {
             Node* tmp = first;
+            first = first->link;
+            delete tmp;
+        }
+    }
 
     void push(const T& item) {
         Node* node = new Node(item);
