@@ -20,7 +20,6 @@ class TPQueue {
 
  public:
     TPQueue() : first(nullptr) {}
-
     ~TPQueue() {
         while (first) {
             Node* tmp = first;
@@ -31,7 +30,6 @@ class TPQueue {
 
     void push(const T& item) {
         Node* node = new Node(item);
-
         if (!first || item.prior > first->info.prior) {
             node->link = first;
             first = node;
@@ -53,4 +51,4 @@ class TPQueue {
     }
 };
 
-#endif
+#endif  // INCLUDE_TPQUEUE_H_
